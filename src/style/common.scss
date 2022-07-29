@@ -1,0 +1,19 @@
+ul,
+li,
+p,
+body {
+  margin: 0;
+  padding: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  &_align {
+    align-items: center;
+  }
+}
