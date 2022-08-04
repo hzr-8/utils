@@ -21,7 +21,7 @@ export default defineConfig({
   },
   server: {
     open: true,
-    port: 3001,
+    port: 8090,
     // proxy: { // 配置本地代理地址
     //   '/dev': 'http://xxx.xxx.com/api'
     // }
