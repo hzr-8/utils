@@ -1,39 +1,86 @@
 <script setup lang="ts">
 import { ElMessage } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 
-type plotTypes = {
-  [key: string]: any;
-};
+interface plotTypes {
+  [key: string | number]: any;
+}
 
+// 表单
 const form = reactive({
   regText: '',
+  type: 1,
   content: '',
   result: '',
 });
-const reg = ref(new RegExp(/\(('|").+\..+('|")\)/, 'gm'));
 
+// 正则
+const regMap: plotTypes = {
+  1: { reg: /\(('|")[^('|")]+\.[^('|")]+('|")\)/gm, example: '("union.confirm") => { "union": { "confirm": "xxxxx" } }' },
+  2: { reg: /i18n=('|")[^('|")]+('|")[^>]*>[^<]+</gm, example: '<span i18n="i18n.confirm">xxxxx</span> => { "i18n.confirm": "xxxxx" }' },
+  // 2: { reg: /i18n\..*"/gm, example: '<span i18n="i18n.confirm">xxxxx</span> => { "i18n.confirm": "xxxxx" }' },
+};
+
+// 提交
 const onSubmit = () => {
   const str = form.content;
-  const arr = str.match(reg.value);
+  console.log(regMap[form.type]);
 
-  console.log('正则匹配结果:', arr);
+  const list = str.match(regMap[form.type].reg);
 
-  if (arr) {
-    const obj: plotTypes = {};
-    arr.forEach((item) => {
-      const [str1, str2] = item.split('.');
-      const name = str1.slice(2);
-      const key = str2.slice(0, -2);
-      if (!obj[name]) {
-        obj[name] = {};
-      } else {
-        obj[name][key] = 'xxxxx';
-      }
-    });
-    console.log('result', obj);
-    form.result = JSON.stringify(obj);
+  console.log('正则匹配结果:', list);
+  ElMessage.info({
+    message: '正则匹配结果: ' + list,
+  });
+  if (!list) return;
+
+  switch (form.type) {
+    case 1:
+      dealWithVueString(list);
+      break;
+    case 2:
+      dealWithHtmlString(list);
+      break;
+    default:
+      break;
   }
+};
+
+// 处理Vuei18n语法字符串
+const dealWithVueString = (list: Array<string>) => {
+  const obj: plotTypes = {};
+  list.forEach((item) => {
+    const [str1, str2] = item.split('.');
+    const name = str1.slice(2);
+    const key = str2.slice(0, -2);
+    if (!obj[name]) {
+      obj[name] = {};
+    } else {
+      obj[name][key] = 'xxxxx';
+    }
+  });
+  console.log('result', obj);
+  form.result = JSON.stringify(obj);
+};
+
+// 处理Htmli18n语法字符串
+const dealWithHtmlString = (list: Array<string>) => {
+  const obj: plotTypes = {};
+  list.forEach((item) => {
+    const [str1, str2] = item.split('>');
+    const key = str1.slice(6, -1);
+    const value = str2.slice(0, -1).trim();
+
+    if (!obj[key]) {
+      obj[key] = value;
+    } else {
+      if (obj[key] !== value) {
+        console.error(`i18n="${key}" 出现重复，且值不同, 原值为：${obj[key]}，现在的值为：${value} `);
+      }
+    }
+  });
+  console.log('result', obj);
+  form.result = JSON.stringify(obj);
 };
 
 const onReset = () => {
@@ -56,23 +103,26 @@ const onCopy = () => {
 };
 
 // 修改匹配规则
-const onBlurReg = () => {
-  if (form.regText) {
-    reg.value = new RegExp(form.regText, 'gm');
-  }
-};
+// const onBlurReg = () => {
+//   if (form.regText) {
+//     reg.value = new RegExp(form.regText, 'gm');
+//   }
+// };
 </script>
 
 <template>
   <section class="utils">
     <div class="title">
-      <h4>提取文件中用到的翻译 例: ("union.confirm") => { "union": { "confirm": "xxxxx" } }</h4>
-      <div class="desc">匹配规则： {{ reg }}</div>
-      <!-- <el-input v-model="form.result" type="text" /> -->
+      <h4>提取文件中用到的翻译 例: {{ regMap[form.type].example }}</h4>
+      <div class="desc">匹配规则： {{ regMap[form.type].reg }}</div>
     </div>
+
     <el-form :model="form" label-width="120px">
-      <el-form-item label="RegExp">
-        <el-input v-model="form.regText" type="text" @blur="onBlurReg" />
+      <el-form-item label="Type">
+        <el-radio-group v-model="form.type">
+          <el-radio :label="1" border>Vue3 t("union.confirm")</el-radio>
+          <el-radio :label="2" border>Html i18n="i18n.confirm"</el-radio>
+        </el-radio-group>
       </el-form-item>
       <el-form-item label="Text">
         <el-input v-model="form.content" type="textarea" />

@@ -1,6 +1,5 @@
 import { RouteRecordRaw } from 'vue-router';
-import { ROUTER_NAME } from '@CONST';
-console.log(ROUTER_NAME);
+// import { ROUTER_NAME } from '@CONST';
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -19,7 +18,7 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     meta: { requiresAuth: true },
     component: () => import('@/views/login-after.vue'),
-    redirect: () => 'utils',
+    redirect: () => 'excel',
     children: [
       // {
       //   path: 'data_list',
@@ -28,9 +27,13 @@ const routes: Array<RouteRecordRaw> = [
       //   component: () => import('@/views/data-list/index.vue'),
       // },
       {
+        path: 'excel',
+        name: 'excel',
+        component: () => import('@/views/excel/index.vue'),
+      },
+      {
         path: 'utils',
         name: 'utils',
-        redirect: '',
         component: () => import('@/views/utils/index.vue'),
       },
     ],

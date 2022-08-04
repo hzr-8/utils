@@ -23,6 +23,10 @@ export const menu: Array<Menu> = [
   //   path: `/${ROUTER_NAME.RN_LOGIN}`,
   // },
   {
+    title: 'Excel 翻译',
+    path: `/excel`,
+  },
+  {
     title: ROUTER_NAME.RN_UTILS_LABEL,
     path: `/${ROUTER_NAME.RN_UTILS}`,
   },

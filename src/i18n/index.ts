@@ -15,6 +15,5 @@ const i18n = createI18n({
     [LANG_EN_FLAG]: customLangEn,
   },
 });
-console.log(i18n.global.locale);
 
 export default i18n;
