@@ -20,12 +20,6 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/login-after.vue'),
     redirect: () => 'excel',
     children: [
-      // {
-      //   path: 'data_list',
-      //   name: 'data_list',
-      //   redirect: '',
-      //   component: () => import('@/views/data-list/index.vue'),
-      // },
       {
         path: 'excel',
         name: 'excel',
@@ -38,12 +32,6 @@ const routes: Array<RouteRecordRaw> = [
       },
     ],
   },
-  // {
-  //   path: '/login',
-  //   name: 'login',
-  //   meta: { requiresAuth: true },
-  //   component: () => import('@/views/login.vue'),
-  // },
   {
     path: '/:pathMatch(.*)*',
     name: 'not_found',

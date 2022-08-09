@@ -16,9 +16,8 @@ const form = reactive({
 
 // 正则
 const regMap: plotTypes = {
-  1: { reg: /\(('|")[^('|")]+\.[^('|")]+('|")\)/gm, example: '("union.confirm") => { "union": { "confirm": "xxxxx" } }' },
+  1: { reg: /t\(('|")[^('|")]+\.[^('|")]+('|")\)/gm, example: 't("union.confirm") => { "union": { "confirm": "xxxxx" } }' },
   2: { reg: /i18n=('|")[^('|")]+('|")[^>]*>[^<]+</gm, example: '<span i18n="i18n.confirm">xxxxx</span> => { "i18n.confirm": "xxxxx" }' },
-  // 2: { reg: /i18n\..*"/gm, example: '<span i18n="i18n.confirm">xxxxx</span> => { "i18n.confirm": "xxxxx" }' },
 };
 
 // 提交
@@ -51,7 +50,7 @@ const dealWithVueString = (list: Array<string>) => {
   const obj: plotTypes = {};
   list.forEach((item) => {
     const [str1, str2] = item.split('.');
-    const name = str1.slice(2);
+    const name = str1.slice(3);
     const key = str2.slice(0, -2);
     if (!obj[name]) {
       obj[name] = {};
@@ -75,7 +74,7 @@ const dealWithHtmlString = (list: Array<string>) => {
       obj[key] = value;
     } else {
       if (obj[key] !== value) {
-        console.error(`i18n="${key}" 出现重复，且值不同, 原值为：${obj[key]}，现在的值为：${value} `);
+        console.error(`Html文件中 i18n="${key}" 出现重复，且值不同, 原值为：${obj[key]}，现在的值为：${value} `);
       }
     }
   });
@@ -124,7 +123,7 @@ const onCopy = () => {
           <el-radio :label="2" border>Html i18n="i18n.confirm"</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="Text">
+      <el-form-item label="File content">
         <el-input v-model="form.content" type="textarea" />
       </el-form-item>
       <el-form-item label="Result">
