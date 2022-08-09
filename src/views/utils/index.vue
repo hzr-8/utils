@@ -54,9 +54,8 @@ const dealWithVueString = (list: Array<string>) => {
     const key = str2.slice(0, -2);
     if (!obj[name]) {
       obj[name] = {};
-    } else {
-      obj[name][key] = 'xxxxx';
     }
+    obj[name][key] = 'xxxxx';
   });
   console.log('result', obj);
   form.result = JSON.stringify(obj);
@@ -67,7 +66,8 @@ const dealWithHtmlString = (list: Array<string>) => {
   const obj: plotTypes = {};
   list.forEach((item) => {
     const [str1, str2] = item.split('>');
-    const key = str1.slice(6, -1);
+    const i18nArr = str1.match(/i18n=('|")[^('|")]+('|")/);
+    const key = i18nArr ? i18nArr[0].slice(6, -1) : '';
     const value = str2.slice(0, -1).trim();
 
     if (!obj[key]) {
