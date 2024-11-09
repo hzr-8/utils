@@ -1,8 +1,5 @@
 {
-  "i18n-ally.localesPaths": [
-    "src/i18n",
-    "src/i18n/lang"
-  ],
+  "i18n-ally.localesPaths": ["src/i18n", "src/i18n/lang"],
   "i18n-ally.keystyle": "nested",
   "files.exclude": {
     "out": false // set this to true to hide the "out" folder with the compiled JS files
@@ -17,8 +14,8 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   // 保存代码时自动修复
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit"
   },
   // 保存代码时自动格式化
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": true
 }

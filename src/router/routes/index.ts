@@ -18,12 +18,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     meta: { requiresAuth: true },
     component: () => import('@/views/login-after.vue'),
-    redirect: () => 'excel',
+    redirect: () => 'excelV2',
     children: [
       {
         path: 'excel',
         name: 'excel',
         component: () => import('@/views/excel/index.vue'),
+      },
+      {
+        path: 'excelV2',
+        name: 'excelV2',
+        component: () => import('@/views/excelV2/index.vue'),
       },
       {
         path: 'utils',

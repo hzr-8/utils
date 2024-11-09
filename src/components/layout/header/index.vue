@@ -1,5 +1,5 @@
 <script lang="ts">
-import { SwitchButton, ArrowDown } from '@element-plus/icons-vue'
+import { SwitchButton, ArrowDown } from '@element-plus/icons-vue';
 import { defineComponent } from 'vue';
 import i18n, { LANG_ZH_FLAG, LANG_EN_FLAG, LOCAL_KEY } from '@/i18n';
 
@@ -10,22 +10,20 @@ export default defineComponent({
     const switchLanguage = (command: string) => {
       localStorage.setItem(LOCAL_KEY, command);
       i18n.global.locale = command;
-    }
+    };
     return {
       switchLanguage,
       SwitchButton,
       LANG_ZH_FLAG,
       LANG_EN_FLAG,
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <template>
   <section class="layout-header">
-    <section class="header-left">
-      
-    </section>
+    <section class="header-left"></section>
     <section class="header-right">
       <el-dropdown @command="switchLanguage">
         <span class="el-dropdown-link">
@@ -56,6 +54,8 @@ export default defineComponent({
   padding-right: 50px;
 }
 .header-right {
+  display: flex;
+  align-items: center;
   // .el-dropdown-link {
   //   color: var(--el-color-primary);
   // }

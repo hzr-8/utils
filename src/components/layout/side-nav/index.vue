@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Menu as IconMenu } from '@element-plus/icons-vue'
+import { Menu as IconMenu } from '@element-plus/icons-vue';
 import { defineComponent, reactive, ref } from 'vue';
-import { menu } from './nav'
+import { menu } from './nav';
 
 export default defineComponent({
   components: {
-    IconMenu
+    IconMenu,
   },
 
   setup() {
@@ -15,9 +15,9 @@ export default defineComponent({
     return {
       isCollapse,
       menuList,
-    }
-  }
-})
+    };
+  },
+});
 </script>
 
 <template>
@@ -29,11 +29,7 @@ export default defineComponent({
     </section>
 
     <!-- menu -->
-    <el-menu
-      class="menu"
-      :collapse="isCollapse"
-      :router="true"
-    >
+    <el-menu class="menu" :default-active="$route.path" :collapse="isCollapse" :router="true">
       <template v-for="(item, index) in menuList" :key="index">
         <el-sub-menu v-if="item.children" index="1">
           <template #title>
@@ -57,6 +53,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import '@/style/mixin.scss';
 .layout-side-nav {
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
   width: 200px;
   height: 100vh;
   background-color: #fff;
