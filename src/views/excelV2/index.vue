@@ -2,7 +2,7 @@
   <div class="translate">
     <el-alert title="注意！Excel表格第一行应为语言种类，且其中一列key值为en" type="warning" :closable="false" />
 
-    <el-upload ref="elUploadInstance" class="upload" drag multiple :auto-upload="false" :limit="1" :show-file-list="false" :on-change="getImportFile">
+    <el-upload ref="elUploadInstance" class="upload" action="#" drag multiple :auto-upload="false" :limit="1" :show-file-list="false" :on-change="getImportFile">
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
     </el-upload>
@@ -51,10 +51,10 @@ const elUploadInstance = ref();
 const getImportFile = (file) => {
   ElMessage.closeAll();
   emptyWarning.value = [];
-  elUploadInstance.value?.clearFiles();
+  // elUploadInstance.value?.clearFiles();
   if (file.raw) {
     readFile(file.raw);
-    // elUploadInstance.value?.handleRemove(file);
+    elUploadInstance.value?.handleRemove(file);
   }
 };
 
@@ -146,6 +146,14 @@ const copy = (message) => {
 </script>
 
 <style lang="scss">
+.el-upload {
+  width: 100%;
+
+  .el-upload-dragger {
+    width: 100%;
+  }
+}
+
 .el-card {
   font-size: 12px;
   cursor: pointer;

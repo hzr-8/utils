@@ -119,8 +119,8 @@ const onCopy = () => {
     <el-form :model="form" label-width="120px">
       <el-form-item label="Type">
         <el-radio-group v-model="form.type">
-          <el-radio :value="1" border>Vue3 t("union.confirm")</el-radio>
-          <el-radio :value="2" border>Html i18n="i18n.confirm"</el-radio>
+          <el-radio :label="1" border>Vue3 t("union.confirm")</el-radio>
+          <el-radio :label="2" border>Html i18n="i18n.confirm"</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="File content">
