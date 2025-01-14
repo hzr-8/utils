@@ -6,10 +6,10 @@
     <div>excel转json数据</div>
     <input v-model="lang" type="text" placeholder="需要翻译的语言key值" />
     <input type="file" ref="fileTemp" accept=".xlsx,.xls" @change="getImportFile" />
-    <br>
-    <br>
+    <br />
+    <br />
     <textarea name="" id="" cols="100" rows="10" v-model="textarea"></textarea>
-    <br>
+    <br />
     <el-button @click="onCopy">Copy</el-button>
   </div>
 </template>
@@ -25,7 +25,7 @@ export default {
       fanyi: [],
       jsonString: '',
       lang: '',
-      textarea: ''
+      textarea: '',
     };
   },
   methods: {
@@ -36,10 +36,20 @@ export default {
       // return;
 
       this.getList = [];
-      for (let key in data) {
+      const sheetHeader = ['key'];
+      const sheetFilter = ['key'];
+      for (const language in data) {
+        sheetHeader.push(language);
+        sheetFilter.push(language);
+      }
+      for (let key in data['en']) {
         let arr = [];
-        for (let k in data[key]) {
-          arr.push({ key: k, en: data[key][k] });
+        for (let k in data['en'][key]) {
+          const languageObj = {};
+          for (const language in data) {
+            languageObj[language] = data[language][key][k];
+          }
+          arr.push({ key: k, ...languageObj });
         }
         this.getList.push({ name: key, val: arr });
       }
@@ -59,9 +69,9 @@ export default {
           //   excel文件sheet的表名
           sheetName: value.name,
           //   excel文件表头名
-          sheetHeader: ['key', 'en'],
+          sheetHeader: sheetHeader,
           //   excel文件列名
-          sheetFilter: ['key', 'en'],
+          sheetFilter: sheetFilter,
         });
       });
       console.log(option.datas);
@@ -70,7 +80,7 @@ export default {
       //   调用保存方法
       toExcel.saveExcel();
     },
-    
+
     // 获取文件
     getImportFile() {
       if (this.$refs.fileTemp && !this.$refs.fileTemp.files[0]) return false;
@@ -79,10 +89,10 @@ export default {
       // 选同个文件会无反应,清空value值
       this.$refs.fileTemp.value = '';
     },
-    
+
     // excel转json
     readFile(file) {
-      let _this = this
+      let _this = this;
       let language = this.lang; //要翻译的语言
       let reader = new FileReader();
       reader.onload = function (e) {
@@ -129,24 +139,24 @@ export default {
           }
         });
         console.log(_this.fanyi);
-        _this.textarea = JSON.stringify(_this.fanyi)
+        _this.textarea = JSON.stringify(_this.fanyi);
       };
       reader.readAsBinaryString(file);
     },
 
-    onCopy(){
+    onCopy() {
       this.textarea &&
         navigator &&
         navigator.clipboard &&
         navigator.clipboard
-        .writeText(this.textarea)
-        .then((res) => {
-          ElMessage.success('copy success');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      }
+          .writeText(this.textarea)
+          .then((res) => {
+            ElMessage.success('copy success');
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+    },
   },
 };
 </script>
