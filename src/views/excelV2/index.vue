@@ -8,7 +8,7 @@
     </el-upload>
 
     <template v-for="(sheet, i) in fanyi">
-      <h2>Sheet {{ i + 1 }}</h2>
+      <h2>Sheet：{{ sheetNames[i] }}</h2>
       <el-row :gutter="20">
         <el-col :xs="12" :span="8" :md="8" :lg="6" :xl="4" v-for="(json, language) in sheet">
           <el-card @click="copy(JSON.stringify(json))">
@@ -45,12 +45,14 @@ import { ref } from 'vue';
 import * as XLSX from 'xlsx';
 
 const fanyi = ref([]);
+const sheetNames = ref([]);
 
 const elUploadInstance = ref();
 // 获取文件
 const getImportFile = (file) => {
   ElMessage.closeAll();
   emptyWarning.value = [];
+  fanyi.value = [];
   // elUploadInstance.value?.clearFiles();
   if (file.raw) {
     readFile(file.raw);
@@ -65,6 +67,7 @@ const readFile = (file) => {
   let reader = new FileReader();
   reader.onload = function (e) {
     let wb = XLSX.read(e.target.result, { type: 'binary' }); // 读取文件
+    sheetNames.value = wb.SheetNames;
     wb.SheetNames.forEach((value, index) => {
       const wbSheetName = wb.SheetNames[index];
       const wbSheet = wb.Sheets[wbSheetName];
