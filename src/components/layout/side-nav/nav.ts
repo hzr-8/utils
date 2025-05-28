@@ -34,4 +34,8 @@ export const menu: Array<Menu> = [
     title: ROUTER_NAME.RN_UTILS_LABEL,
     path: `/${ROUTER_NAME.RN_UTILS}`,
   },
+  {
+    title: 'Json 转 Excel',
+    path: `/jsonToExcel`,
+  },
 ];

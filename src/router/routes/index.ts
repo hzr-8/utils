@@ -35,6 +35,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'utils',
         component: () => import('@/views/utils/index.vue'),
       },
+      {
+        path: 'jsonToExcel',
+        name: 'jsonToExcel',
+        component: () => import('@/views/jsonToExcel/index.vue'),
+      },
     ],
   },
   {

@@ -88,6 +88,8 @@ const readFile = (file) => {
             }
             // 属性名包含key，代表是我们原有的翻译导出来的，就用原来的key
             if (row.hasOwnProperty('key')) {
+              // 除了源语言，翻译为空的，跳过 (这里不再给报错信息)
+              if (!row[language] || (!String(row[language]).trim() && language !== 'en')) return;
               fanyiMap[row.key] = row[language];
             } else {
               // 属性名不包含key，代表是新的翻译，截取英文字母自己生成一个key
@@ -95,6 +97,7 @@ const readFile = (file) => {
               // 去除首尾空格
               row.en.trim();
               const allEn = row.en.replace(/[^a-zA-Z]/g, '');
+              // 除了源语言，翻译为空的，跳过 (这里给报错信息)
               if (!row[language] || !String(row[language]).trim()) {
                 const warningMessage = `语言：${language} ${rowIndex + 2}行 - 翻译为空，对应英语翻译为：${row.en}`;
                 console.error(warningMessage);
@@ -121,7 +124,7 @@ const readFile = (file) => {
         });
         if (emptyWarning.value.length) {
           ElMessage.error({
-            duration: 0,
+            duration: 2000,
             message: '翻译值为空，请检查一下error信息！',
             showClose: true,
           });
